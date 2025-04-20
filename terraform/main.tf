@@ -19,4 +19,11 @@ module "ec2" {
   security_group  = module.security_group.security_group_id
   subnet_id       = module.vpc.public_subnets[0]
   user_data       = base64encode(templatefile("${path.module}/user_data.sh", {}))
+  tags = {
+    Name        = "Terraform-EC2-Instance"
+    OS_Version  = "Amazon Linux 2023"
+    ManagedBy   = "Terraform"
+  }
 }
+
+

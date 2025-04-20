@@ -1,18 +1,19 @@
 #!/bin/bash
-# Update and install prerequisites
-apt-get update -y
-apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+# Update system
+sudo dnf update -y
 
 # Install Docker
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-apt-get update -y
-apt-get install -y docker-ce docker-ce-cli containerd.io
-systemctl enable --now docker
+sudo dnf install -y docker
+sudo systemctl enable docker
+sudo systemctl start docker
 
 # Install Nginx
-apt-get install -y nginx
-systemctl enable --now nginx
+sudo dnf install -y nginx
+sudo systemctl enable nginx
+sudo systemctl start nginx
+
+# Add ec2-user to docker group (Amazon Linux default user)
+sudo usermod -aG docker ec2-user
 
 # Verify installations
 docker --version
