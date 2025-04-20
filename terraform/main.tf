@@ -8,6 +8,6 @@ module "ec2" {
   ami             = var.ami
   instance_type   = var.instance_type
   key_pair        = var.key_pair
-  security_group  = module.security_group.security_group_id
+  security_group  = module.aws_security_group.instance_sg.id
   user_data       = file("./modules/ec2/scripts/install_docker.sh") # Or install_nginx.sh
 }
