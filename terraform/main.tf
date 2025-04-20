@@ -9,5 +9,5 @@ module "ec2" {
   instance_type   = var.instance_type
   key_pair        = var.key_pair
   security_group  = module.security_group.security_group_id
-  user_data       = file("./modules/ec2/scripts/install_docker.sh") # Or install_nginx.sh
+  user_data       = file("./modules/ec2/scripts/install_docker_and_nginx.sh")
 }
