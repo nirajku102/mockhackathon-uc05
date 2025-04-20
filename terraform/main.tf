@@ -15,3 +15,5 @@ module "ec2" {
   security_group  = module.security_group.security_group_id
   user_data       = file("./modules/ec2/scripts/nginx.sh")
   subnet_id       = module.vpc.subnet_id
+}
+
