@@ -14,6 +14,6 @@ module "ec2" {
   key_pair        = var.key_pair
   security_group  = module.security_group.security_group_id
   user_data       = file("./modules/ec2/scripts/nginx.sh")
-  subnet_id       = module.vpc.subnet_id
+  subnet_id       = var.subnet_id
 }
 
