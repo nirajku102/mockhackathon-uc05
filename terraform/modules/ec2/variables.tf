@@ -22,3 +22,8 @@ variable "user_data" {
   description = "User data script to configure the instance"
   type        = string
 }
+
+variable "subnet_id" {
+  description = "Subnet ID for the EC2 instance"
+  type        = string
+}
