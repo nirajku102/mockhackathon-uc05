@@ -18,5 +18,5 @@ module "ec2" {
   key_pair        = var.key_pair
   security_group  = module.security_group.security_group_id
   subnet_id       = module.vpc.public_subnets[0]
-  user_data       = file("${path.module}/user_data.sh")
+  user_data       = base64encode(templatefile("${path.module}/user_data.sh", {}))
 }
