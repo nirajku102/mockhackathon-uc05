@@ -1,7 +1,8 @@
 module "vpc" {
-  source            = "./modules/vpc"
-  cidr_block        = "10.0.0.0/16"
-  subnet_cidr_block = "10.0.1.0/24"
+  source = "./modules/vpc"
+  vpc_cidr = var.vpc_cidr
+  public_subnets_cidr = var.public_subnets_cidr
+  availability_zones = var.availability_zones
 }
 
 module "security_group" {
