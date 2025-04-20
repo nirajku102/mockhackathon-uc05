@@ -1,5 +1,3 @@
-# filepath: /workspaces/mockhackathon-uc05/terraform/modules/ec2/scripts/install_docker_and_nginx.sh
-#!/bin/bash
 # Update the package list
 sudo apt-get update -y
 
