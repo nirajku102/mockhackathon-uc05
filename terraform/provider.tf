@@ -1,4 +1,3 @@
-
 terraform {
   required_version = ">= 1.0.0" # Specify the minimum Terraform version
   required_providers {
@@ -13,4 +12,8 @@ terraform {
     key            = "terraform"
     region         = "eu-north-1"
   }
+}
+
+provider "aws" {
+  region = "eu-north-1"
 }
