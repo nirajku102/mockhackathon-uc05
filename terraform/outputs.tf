@@ -3,7 +3,12 @@ output "ec2_public_ip" {
   value       = module.ec2.public_ip
 }
 
+output "vpc_id" {
+  description = "VPC ID"
+  value       = module.vpc.vpc_id
+}
+
 output "security_group_id" {
-  description = "The ID of the security group"
+  description = "Security Group ID"
   value       = module.security_group.security_group_id
 }
