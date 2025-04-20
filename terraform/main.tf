@@ -1,5 +1,6 @@
 module "security_group" {
   source = "./modules/security_group"
+  name   = "hackathon-security-group"
 }
 
 module "ec2" {
