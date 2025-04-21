@@ -8,9 +8,9 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "mockhackathon-uc05"
-    key            = "terraform"
-    region         = "eu-north-1"
+    bucket = "mockhackathon-uc05"
+    key    = "terraform"
+    region = "eu-north-1"
   }
 }
 
