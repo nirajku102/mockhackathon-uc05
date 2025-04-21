@@ -42,11 +42,14 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       # Step 1: Run Terraform Format
-      - name: Run Terraform Format
-        run: |
-          cd terraform
-          terraform fmt -check -recursive
+      # - name: Run Terraform Format
+      #   run: |
+      #     cd terraform
+      #     terraform fmt -check -recursive
 
+      - name: terraform-fmt
+        uses: dflook/terraform-fmt@v1.29.1
+ 
       # Step 2: Run Terraform Validate
       - name: Run Terraform Validate
         run: |
