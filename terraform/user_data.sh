@@ -1,14 +1,14 @@
 #!/bin/bash
 # Update system
-sudo dnf update -y
+sudo yum update -y
 
 # Install Docker
-sudo dnf install -y docker
+sudo yum install -y docker.io
 sudo systemctl enable docker
 sudo systemctl start docker
 
 # Install Nginx
-sudo dnf install -y nginx
+sudo yum install -y nginx
 sudo systemctl enable nginx
 sudo systemctl start nginx
 

@@ -16,10 +16,6 @@ jobs:
       id-token: write
       pull-requests: write
 
-# jobs:
-#   terraform-apply:
-#     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45,75 +41,89 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # - name: Install Checkov
-      #   run: |
-      #     pip install checkov
+      # Step 1: Run Terraform Format
+      - name: Run Terraform Format
+        run: |
+          cd terraform
+          terraform fmt -check -recursive
 
-      # - name: Run Checkov
-      #   run: |
-      #     cd terraform
-      #     checkov -d . --soft-fail
+      # Step 2: Run Terraform Validate
+      - name: Run Terraform Validate
+        run: |
+          cd terraform
+          terraform validate
 
-      # - name: Install TFLint
-      #   run: |
-      #     curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+      # Step 3: Install Checkov
+      - name: Install Checkov
+        run: |
+          pip install checkov
 
-      # - name: Run TFLint
-      #   run: |
-      #     cd terraform
-      #     tflint
+      # Step 4: Run Checkov
+      - name: Run Checkov
+        run: |
+          cd terraform
+          checkov -d . --soft-fail
 
-      # - name: Configure AWS credentials using OIDC
-      #   uses: aws-actions/configure-aws-credentials@v3
-      #   with:
-      #     role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role
-      #     aws-region: ${{ env.AWS_REGION }}
+      # Step 5: Install TFLint
+      - name: Install TFLint
+        run: |
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
+      # Step 6: Run TFLint
+      - name: Run TFLint
+        run: |
+          cd terraform
+          tflint
+
+      # Step 7: Initialize Terraform
       - name: Initialize Terraform
         run: |
           cd terraform
           terraform init
 
+      # Step 8: Generate Terraform Plan
       - name: Generate Terraform Plan
         run: |
           cd terraform
           terraform plan -var-file=dev.tfvars -out=tfplan
-              
 
-      # - name: Save Terraform Plan File
-      #   run: |
-      #     cd terraform
-      #     terraform show -no-color tfplan > terraform-plan.md
-      #     rm -rf tfplan
+      # Step 9: Save Terraform Plan File
+      - name: Save Terraform Plan File
+        run: |
+          cd terraform
+          terraform show -no-color tfplan > terraform-plan.md
+          rm -rf tfplan
 
-      # - name: Read Terraform Plan File
-      #   id: read_plan
-      #   run: |
-      #     PLAN_CONTENT=$(cat terraform/terraform-plan.md)
-      #     echo "plan_content<<EOF" >> $GITHUB_ENV
-      #     echo "$PLAN_CONTENT" >> $GITHUB_ENV
-      #     echo "EOF" >> $GITHUB_ENV
+      # Step 10: Read Terraform Plan File
+      - name: Read Terraform Plan File
+        id: read_plan
+        run: |
+          PLAN_CONTENT=$(cat terraform/terraform-plan.md)
+          echo "plan_content<<EOF" >> $GITHUB_ENV
+          echo "$PLAN_CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
-      # - name: Create Pull Request to main
-      #   uses: peter-evans/create-pull-request@v6
-      #   with:
-      #     branch: test
-      #     base: main
-      #     title: "Terraform Plan Reviews"
-      #     body: |
-      #       ## Terraform Plan
-      #       THE following changes are proposed by this Terraform plan:
-      #       ```diff
-      #       ${{ env.plan_content }}
-      #       ```
+      # Step 11: Create Pull Request to main
+      - name: Create Pull Request to main
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: test
+          base: main
+          title: "Terraform Plan Reviews"
+          body: |
+            ## Terraform Plan
+            THE following changes are proposed by this Terraform plan:
+            ```diff
+            ${{ env.plan_content }}
+            ```
 
+      # Step 12: Run Terraform Apply
       - name: Run Terraform Apply
         run: |
           cd terraform
           terraform init
           terraform apply -auto-approve \
             -var-file=dev.tfvars
-            # -var="image_uri=$ECR_REPO_APP:$IMAGE_TAG"
 
           # terraform destroy -auto-approve \
           #   -var-file=dev.tfvars \
