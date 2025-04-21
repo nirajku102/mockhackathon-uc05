@@ -50,12 +50,9 @@ jobs:
       - name: terraform-fmt
         uses: dflook/terraform-fmt@v1.29.1
  
-      # Step 2: Run Terraform Validate
-      - name: Run Terraform Validate
-        run: |
-          cd terraform
-          terraform validate
-
+      - name: terraform-validate
+        uses: dflook/terraform-validate@v1.29.1
+       
       # Step 3: Install Checkov
       - name: Install Checkov
         run: |
